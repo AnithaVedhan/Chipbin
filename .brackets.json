@@ -1,0 +1,7 @@
+{
+    "jscodehints.detectedExclusions": [
+        "C:/ChipBin/www/lib/ionic/js/ionic.min.js",
+        "C:/ChipBin/www/js/controllers.js",
+        "C:/ChipBin/www/js/app.js"
+    ]
+}

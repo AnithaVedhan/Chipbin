@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    
+
+<script type="text/javascript" src="BpTspSolver.js"></script>
+  
+<script src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap" async defer>
+ 
+<script type="text/javascript">
+    
+    function initMap() {  
+
+       var map = new google.maps.Map(document.getElementById('map'),
+                                     {
+            center: {lat: -12.9667, lng: 77.5667},    zoom: 12  })
+
+        var infoWindow = new google.maps.InfoWindow({map: map}); 
+        
+ 
+//marker.setMap(map);
+
+
+    // Try HTML5 geolocation.
+    if (navigator.geolocation)
+    {       navigator.geolocation.getCurrentPosition(function(position) 
+        { 
+        var pos = { lat: position.coords.latitude,lng: position.coords.longitude };
+         var marker=new google.maps.Marker({
+  position:pos,animation:google.maps.Animation.BOUNCE
+  });
+marker.setMap(map);
+
+        var pos1 = { lat: position.coords.latitude-100,lng: position.coords.longitude-100 };
+        // var marker1=new google.maps.Marker({
+  //position:pos1,animation:google.maps.Animation.BOUNCE
+ // });
+      //  marker1.setMap(map);
+         //infoWindow.setPosition(pos);
+         //infoWindow.setContent('Location found.');
+         map.setCenter(pos);
+    
+        }, 
+        function() {      
+        handleLocationError(true, infoWindow, map.getCenter());                           });  } 
+        else {    // Browser doesn't support Geolocation   
+            handleLocationError(false,infoWindow,map.getCenter());              }
+    }
+    
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {infoWindow.setPosition(pos);  infoWindow.setContent(browserHasGeolocation ?                        'Error: The Geolocation service failed.' :                        'Error: Your browser doesn\'t support geolocation.');}
+  </script>
+   
+
+<script  type="text/javascript">
+    
+// Your normal Google Map object initialization
+
+myMap = new google.maps.Map(map, google.maps.MapTypeId.ROADMAP);
+directionsPanel = document.getElementById("map");
+
+// Create the tsp object
+tsp = new BpTspSolver(myMap, directionsPanel);
+
+// Set your preferences
+tsp.setAvoidHighways(true);
+tsp.setTravelMode(google.maps.DirectionsTravelMode.WALKING);
+
+// Add points (by coordinates, or by address).
+// The first point added is the starting location.
+// The last point added is the final destination (in the case of A - Z mode)
+tsp.addWaypoint(latLng, addWaypointCallback);  // Note: The callback is new for version 3, to ensure waypoints and addresses appear in the order they were added in.
+tsp.addAddress(address, addAddressCallback);
+
+// Solve the problem (start and end up at the first location)
+tsp.solveRoundTrip(onSolveCallback);
+// Or, if you want to start in the first location and end at the last,
+// but don't care about the order of the points in between:
+tsp.solveAtoZ(onSolveCallback);
+
+// Retrieve the solution (so you can display it to the user or do whatever :-)
+var dir = tsp.getGDirections();  // This is a normal GDirections object.
+// The order of the elements in dir now correspond to the optimal route.
+
+// If you just want the permutation of the location indices that is the best route:
+var order = tsp.getOrder();
+
+// If you want the duration matrix that was used to compute the route:
+var durations = tsp.getDurations();
+
+// There are also other utility functions, see the source.
+</script>
+
+
+</head>
+    <table>
+        <tr>
+            <td>
+                <div id="map" style="width:500px;height:380px;"></div>
+            </td>
+        </tr>
+    </table>
+
+
+</html>

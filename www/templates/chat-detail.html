@@ -1,0 +1,16 @@
+
+<ion-view>
+<ion-content overflow-scroll = "true">
+<ul class="list">
+  <li class="item" ng-repeat="selectedbin in selectedBins" >
+      <label>
+           {{selectedbin.name}}
+      </label>
+  </li>
+</ul>
+    <div style="text-align:center">
+         <label>{{queryOption}}</label>
+    </div>
+         <div resize ui-chart="someData" chart-options="myChartOpts" id="chart"></div>
+ </ion-content>
+</ion-view>
